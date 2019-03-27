@@ -5,7 +5,8 @@
       </l-map>
 
   <section class="Popup" >
-  <User/>
+  </router-view></router-view>
+
 </section>
 
 </div>

@@ -7,7 +7,7 @@
         <div class="md-body-1">Ready for start your trip?</div>
       </div>
 
-      <div class="form">
+      <div class="form" @submit.prevent="auth"> <!--agrego @submit.prevent porque si lo omitimos Vue ejecutara el método, pero luego permitiría que el evento se disparara en el navegador, desordenando nuestro flujo.-->
         <md-field>
           <label>E-mail</label>
           <md-input v-model="login.email" autofocus></md-input>
@@ -21,7 +21,7 @@
 
       <div class="actions md-layout md-alignment-center-space-between">
         <a href="/resetpassword">Reset password</a>
-        <md-button class="md-raised md-primary" @click="auth">Log in</md-button>
+        <md-button class="md-raised md-primary" type="submit" @click="auth">Log in</md-button>
       </div>
 
       <div class="loading-overlay" v-if="loading">
@@ -36,6 +36,7 @@
 
 
 export default {
+  name:'User',
   data() {
     return {
       loading: false,
@@ -49,6 +50,7 @@ export default {
     auth() {
       // your code to login user
       // this is only for example of loading
+      console.log('HOLI');
       this.loading = true;
       setTimeout(() => {
         this.loading = false;
