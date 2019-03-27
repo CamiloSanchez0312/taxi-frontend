@@ -1,21 +1,17 @@
 <template>
-  <div class="map">
-    <l-map :zoom=13 :center="[3.42158, -76.5205]">
-        <l-tile-layer url="https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png"></l-tile-layer>
-      </l-map>
-
-  <section class="Popup" >
-  <User/>
-</section>
-
-</div>
-
+    <div class="map">
+      <Map/>
+      <div class="popup" >
+        <Login/>
+      </div>
+    </div>
 </template>
 
 <script>
 
 import Test from './components/test.vue'
-import User from './components/User.vue'
+import Login from './components/Login.vue'
+import Map from './components/map.vue'
 import {LMap, LTileLayer, LMarker } from 'vue2-leaflet';
 
 export default {
@@ -23,10 +19,11 @@ export default {
   name: 'App',
   components: {
     Test,
-    User,
+    Login,
     LMap,
     LTileLayer,
-    LMarker
+    LMarker,
+    Map
 
   },
   computaded: {
@@ -37,12 +34,18 @@ export default {
 }
 </script>
 
-<style>
-.Popup{
-  z-index:  1000;
+<style >
+.popup{
+  z-index:  400;
   position: relative;
+  height:100% ;
+  width: 100%;
+  top: 0 ;
+  padding: 0%;
+  margin: 0%;
 
-}
+
+},
 .map {
   height:100% ;
   width: 100%;

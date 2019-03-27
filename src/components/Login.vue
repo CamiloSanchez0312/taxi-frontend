@@ -64,8 +64,8 @@ export default {
   align-items: center;
   justify-content: center;
   position: relative;
-  height: 0;
-  top: -50vh;
+  height: 1;
+  top: 7vh;
   .title {
     text-align: center;
     margin-bottom: 40px;
@@ -90,10 +90,10 @@ export default {
     bottom: 0;
     right: 0;
     left: 0;
-    z-index: 0;
+    z-index: -200;
   }
   .md-content {
-    z-index: 1;
+    z-index: 0;
     padding: 40px;
     width: 100%;
     max-width: 400px;
