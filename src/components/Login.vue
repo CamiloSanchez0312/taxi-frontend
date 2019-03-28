@@ -7,21 +7,22 @@
         <div class="md-body-1">Ready for start your trip?</div>
       </div>
 
-      <div class="form" @submit.prevent="auth"> <!--agrego @submit.prevent porque si lo omitimos Vue ejecutara el método, pero luego permitiría que el evento se disparara en el navegador, desordenando nuestro flujo.-->
+      <div class="form" @submit.prevent="login"> <!--agrego @submit.prevent porque si lo omitimos Vue ejecutara el método, pero luego permitiría que el evento se disparara en el navegador, desordenando nuestro flujo.-->
+        <div class="alert alert-danger" v-if="userLogin.error">{{ userLogin.error }}</div>
         <md-field>
           <label>E-mail</label>
-          <md-input v-model="login.email" autofocus></md-input>
+          <md-input v-model="userLogin.email" autofocus></md-input>
         </md-field>
 
         <md-field md-has-password>
           <label>Password</label>
-          <md-input v-model="login.password" type="password"></md-input>
+          <md-input v-model="userLogin.password" type="password"></md-input>
         </md-field>
       </div>
 
       <div class="actions md-layout md-alignment-center-space-between">
         <a href="/resetpassword">Reset password</a>
-        <md-button class="md-raised md-primary" type="submit" @click="auth">Log in</md-button>
+        <md-button class="md-raised md-primary" type="submit" @click="login">Log in</md-button>
       </div>
 
       <div class="loading-overlay" v-if="loading">
@@ -36,18 +37,20 @@
 
 
 export default {
-  name:'User',
+  name:'Login',
   data() {
     return {
       loading: false,
-      login: {
+      userLogin: {
         email: "",
-        password: ""
+        password: "",
+        error:false,
+        msg:''
       }
     };
   },
   methods: {
-    auth() {
+    /*auth() {
       // your code to login user
       // this is only for example of loading
       console.log('HOLI');
@@ -55,6 +58,27 @@ export default {
       setTimeout(() => {
         this.loading = false;
       }, 5000);
+    }*/
+    login () {
+      console.log('HOLI');
+      this.$http.post('http://localhost:3000/user/login', {numero_celular: this.userLogin.email, password: this.userLogin.password })
+        .then(request => this.loginSuccessful(request))
+        .catch(() => this.loginFailed())
+    },
+    loginSuccessful (req) {
+      console.log(req);
+      if (!req.data.token) {
+        this.userLogin.msg=req.data.msg
+        this.loginFailed()
+        return
+      }
+      this.userLogin.error = false
+      localStorage.token = req.data.token
+      this.$router.replace(this.$route.query.redirect || '/test')
+    },
+    loginFailed () {
+      this.userLogin.error = 'Fallo en el login: '+this.userLogin.msg
+      delete localStorage.token
     }
   }
 }

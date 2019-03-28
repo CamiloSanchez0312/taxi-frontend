@@ -10,8 +10,8 @@ import 'leaflet/dist/leaflet.css'
 import VueMaterial from 'vue-material'
 import '../node_modules/vue-material/dist/vue-material.min.css'
 import '../node_modules/vue-material/dist/theme/default.css'
-
-
+import Axios from './backend/vue-axios/axios.js'
+import router from './router'
 
 Vue.use(VueMaterial);
 
@@ -37,5 +37,7 @@ Icon.Default.mergeOptions({
 new Vue({
   el: '#app',
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  router,
+  Axios
 })

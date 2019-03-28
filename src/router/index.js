@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import User from '@/components/User.vue'
+import Login from '@/components/Login.vue'
 import Test from '@/components/test.vue'
+import Map from '@/components/map.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -9,13 +10,18 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'User',
-      component: User
+      name: 'Login',
+      component: Login
     },
     {
       path: '/test',
       name:'test',
       component:Test
+    },
+    {
+      path:'/map',
+      name:'map',
+      component:Map
     }
   ]
 })
