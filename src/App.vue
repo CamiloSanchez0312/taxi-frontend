@@ -7,8 +7,15 @@
       </div>
     </div> -->
     <div class="app">
-
-      <router-view> </router-view>
+      <template v-if="currentUser">
+        <Navbar></Navbar>
+      </template>
+      <div class="container-fluid">
+        <router-view></router-view>
+        <template v-if="currentUser">
+          <Foot></Foot>
+        </template>
+      </div>
     </div>
 
 </template>
@@ -18,7 +25,9 @@
 import Test from './components/test.vue'
 import Login from './components/Login.vue'
 import Map from './components/map.vue'
+import Foot from '@/components/Foot.vue'
 import {LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+import { mapGetters } from 'vuex'
 
 export default {
 
@@ -29,18 +38,29 @@ export default {
     LMap,
     LTileLayer,
     LMarker,
-    Map
+    Map,
+    Foot
 
   },
-  computaded: {
+  computed: {
+    ...mapGetters({currentUser:'currentUser'}),
     loadMap(){
 
     }
   },
-  updated () {
-  if (!localStorage.token && this.$route.path !== '/') {
-    this.$router.push('/?redirect=' + this.$route.path)
-  }}
+  updated(){
+    //this.checkCurrentLogin() //genere un bug ni el hijueputa
+  },
+  created(){
+    this.checkCurrentLogin()
+  },
+  methods: {
+    checkCurrentLogin(){
+      if (!this.currentUser && this.$route.path !== '/') {
+        this.$router.push('/?redirect=' + this.$route.path) //cuando se intenta acceder a una ruta sin estar logueado, lo redirige a '/' y cuando se loguea lo manda a dicha ruta
+      }
+    }
+  }
 
 }
 </script>

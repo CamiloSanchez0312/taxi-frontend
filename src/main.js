@@ -12,7 +12,7 @@ import '../node_modules/vue-material/dist/vue-material.min.css'
 import '../node_modules/vue-material/dist/theme/default.css'
 import Axios from './backend/vue-axios/axios.js'
 import router from './router'
-
+import {store} from './store/index.js'
 Vue.use(VueMaterial);
 
 
@@ -39,5 +39,6 @@ new Vue({
   components: { App },
   template: '<App/>',
   router,
-  Axios
+  Axios,
+  store
 })
