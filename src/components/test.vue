@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     recibe(){
-      this.$http.get('http://172.19.26.32:3000/user' )
+      this.$http.get('localhost:3000/user' )
       .then(res => this.dataReceibed.push(res.body[res.body.length-2].nombre));
     }
   }

@@ -26,7 +26,7 @@ export default {
 .map {
   height:100% ;
   width: 100%;
-  top: 0 ;
+  //top: 0 ;
   position: absolute;
   padding: 0%;
   margin: 0%;

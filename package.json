@@ -13,12 +13,14 @@
   },
   "dependencies": {
     "@vue/cli-service": "^3.5.3",
+    "axios": "^0.18.0",
     "es6-promise": "^4.2.6",
     "leaflet": "^1.4.0",
     "vue": "^2.5.2",
+    "vue-axios": "^2.1.4",
     "vue-material": "^1.0.0-beta-10.2",
     "vue-resource": "^1.5.1",
-    "vue-router": "^3.0.2",
+    "vue-router": "3.0.2",
     "vue2-leaflet": "^2.0.2",
     "vuex": "^3.1.0"
   },
