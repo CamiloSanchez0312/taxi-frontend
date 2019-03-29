@@ -7,15 +7,8 @@
       </div>
     </div> -->
     <div class="app">
-      <template v-if="currentUser">
-        <Navbar></Navbar>
-      </template>
-      <div class="container-fluid">
-        <router-view></router-view>
-        <template v-if="currentUser">
-          <Foot></Foot>
-        </template>
-      </div>
+
+      <router-view> </router-view>
     </div>
 
 </template>
@@ -25,7 +18,6 @@
 import Test from './components/test.vue'
 import Login from './components/Login.vue'
 import Map from './components/map.vue'
-import Foot from '@/components/Foot.vue'
 import {LMap, LTileLayer, LMarker } from 'vue2-leaflet';
 import { mapGetters } from 'vuex'
 
@@ -38,8 +30,7 @@ export default {
     LMap,
     LTileLayer,
     LMarker,
-    Map,
-    Foot
+    Map
 
   },
   computed: {
