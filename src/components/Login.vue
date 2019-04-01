@@ -3,14 +3,14 @@
     <md-content class="md-elevation-3">
       <div class="title">
         <img class="img" src="../assets/taxi.jpg">
-        <div class="md-title">Crazy Taxi Company</div>
+        <div class="md-title">NOT THAT EASY TAXI</div>
         <div class="md-body-1">Ready for start your trip?</div>
       </div>
 
       <div class="form" @submit.prevent="login"> <!--agrego @submit.prevent porque si lo omitimos Vue ejecutara el método, pero luego permitiría que el evento se disparara en el navegador, desordenando nuestro flujo.-->
-        <div class="alert alert-danger" v-if="userLogin.error">{{ userLogin.error }}</div>
+        <!--<div class="alert alert-danger" v-if="userLogin.error">{{ userLogin.error }}</div>-->
         <md-field>
-          <label>E-mail</label>
+          <label>Numero</label>
           <md-input v-model="userLogin.email" autofocus></md-input>
         </md-field>
 
@@ -34,7 +34,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { validationMixin } from 'vuelidate'
+import {
+  required,
+  email,
+  minLength,
+  maxLength
+} from 'vuelidate/lib/validators'
+
 
 export default {
   name:'Login',
@@ -49,14 +56,16 @@ export default {
       }
     };
   },
-  computed:{
-    ...mapGetters({currentUser: 'currentUser'})
-  },
-  created(){
-    this.checkCurrentLogin()
-  },
-  updated(){
-    this.checkCurrentLogin()
+  validations:{
+    login: {
+      user:{
+        required
+      },
+      password:{
+        required
+      }
+
+    }
   },
   methods: {
     /*auth() {
@@ -68,11 +77,6 @@ export default {
         this.loading = false;
       }, 5000);
     }*/
-    checkCurrentLogin(){//cuando ya haya un usuario logueado, no permite ingresar a la ventana de Login
-      if(this.currentUser){
-        this.$router.replace(this.$route.query.redirect || '/map')
-      }
-    },
     login () {
       console.log('HOLI');
       this.$http.post('http://localhost:3000/user/login', {numero_celular: this.userLogin.email, password: this.userLogin.password })
@@ -88,12 +92,10 @@ export default {
       }
       this.userLogin.error = false
       localStorage.token = req.data.token
-      this.$store.dispatch('login')
-      this.$router.replace(this.$route.query.redirect || '/map')
+      this.$router.replace(this.$route.query.redirect || '/test')
     },
     loginFailed () {
-      this.userLogin.error = 'Fallo en el login: '+this.userLogin.msg
-      this.$store.dispatch('logout')
+      //this.userLogin.error = 'Fallo en el login: '+this.userLogin.msg
       delete localStorage.token
     }
   }
