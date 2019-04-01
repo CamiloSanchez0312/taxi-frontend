@@ -3,14 +3,14 @@
     <md-content class="md-elevation-3">
       <div class="title">
         <img class="img" src="../assets/taxi.jpg">
-        <div class="md-title">Crazy Taxi Company</div>
+        <div class="md-title">NOT THAT EASY TAXI</div>
         <div class="md-body-1">Ready for start your trip?</div>
       </div>
 
       <div class="form" @submit.prevent="login"> <!--agrego @submit.prevent porque si lo omitimos Vue ejecutara el método, pero luego permitiría que el evento se disparara en el navegador, desordenando nuestro flujo.-->
-        <div class="alert alert-danger" v-if="userLogin.error">{{ userLogin.error }}</div>
+        <!--<div class="alert alert-danger" v-if="userLogin.error">{{ userLogin.error }}</div>-->
         <md-field>
-          <label>E-mail</label>
+          <label>Numero</label>
           <md-input v-model="userLogin.email" autofocus></md-input>
         </md-field>
 
@@ -34,6 +34,13 @@
 </template>
 
 <script>
+import { validationMixin } from 'vuelidate'
+import {
+  required,
+  email,
+  minLength,
+  maxLength
+} from 'vuelidate/lib/validators'
 
 
 export default {
@@ -48,6 +55,17 @@ export default {
         msg:''
       }
     };
+  },
+  validations:{
+    login: {
+      user:{
+        required
+      },
+      password:{
+        required
+      }
+
+    }
   },
   methods: {
     /*auth() {
@@ -77,7 +95,7 @@ export default {
       this.$router.replace(this.$route.query.redirect || '/test')
     },
     loginFailed () {
-      this.userLogin.error = 'Fallo en el login: '+this.userLogin.msg
+      //this.userLogin.error = 'Fallo en el login: '+this.userLogin.msg
       delete localStorage.token
     }
   }

@@ -6,9 +6,22 @@
         <Login/>
       </div>
     </div> -->
-    <div class="app">
 
-      <router-view> </router-view>
+    <div class="app">
+      <div>
+          <md-button class="md-icon-button" @click="showNav = true">
+                <md-icon>menu</md-icon>
+          </md-button>
+      <md-drawer :md-active.sync="showNav">
+          <md-toolbar class="md-transparent" md-elevation="0">
+            <span class="md-title">My App name</span>
+          </md-toolbar>
+          </md-drawer>
+          <md-content>
+            <router-view> </router-view>
+          </md-content>
+        </div>
+
     </div>
 
 </template>
@@ -19,6 +32,8 @@ import Test from './components/test.vue'
 import Login from './components/Login.vue'
 import Map from './components/map.vue'
 import {LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+import Register from './components/Sign_up.vue';
+import toolbar from './components/toolbar.vue'
 
 export default {
 
@@ -29,8 +44,16 @@ export default {
     LMap,
     LTileLayer,
     LMarker,
-    Map
+    Map,
+    Register,
+    toolbar
 
+  },
+  data(){
+    return {
+      showNav : false
+      
+    }
   },
   computaded: {
     loadMap(){
