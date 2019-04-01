@@ -32,8 +32,11 @@ import Test from './components/test.vue'
 import Login from './components/Login.vue'
 import Map from './components/map.vue'
 import {LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+
 import Register from './components/Sign_up.vue';
 import toolbar from './components/toolbar.vue'
+import { mapGetters } from 'vuex'
+
 
 export default {
 
@@ -49,21 +52,35 @@ export default {
     toolbar
 
   },
+<<<<<<< HEAD
   data(){
     return {
       showNav : false
-      
+
     }
   },
   computaded: {
+=======
+  computed: {
+    ...mapGetters({currentUser:'currentUser'}),
+>>>>>>> 3ebef17cc2faa9f08155c453f25535f4175dd2d7
     loadMap(){
 
     }
   },
-  updated () {
-  if (!localStorage.token && this.$route.path !== '/') {
-    this.$router.push('/?redirect=' + this.$route.path)
-  }}
+  updated(){
+    //this.checkCurrentLogin() //genere un bug ni el hijueputa
+  },
+  created(){
+    this.checkCurrentLogin()
+  },
+  methods: {
+    checkCurrentLogin(){
+      if (!this.currentUser && this.$route.path !== '/') {
+        this.$router.push('/?redirect=' + this.$route.path) //cuando se intenta acceder a una ruta sin estar logueado, lo redirige a '/' y cuando se loguea lo manda a dicha ruta
+      }
+    }
+  }
 
 }
 </script>
