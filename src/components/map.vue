@@ -1,10 +1,10 @@
 <template >
 
-  <div class="map">
+  <md-card class="map">
     <l-map :zoom=13 :center="[3.42158, -76.5205]">
         <l-tile-layer url="https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png"></l-tile-layer>
       </l-map>
-  </div>
+  </md-card>
 
 
 </template>
