@@ -68,15 +68,6 @@ export default {
 
     }
   },
-  computed:{
-    ...mapGetters({currentUser: 'currentUser'})
-  },
-  created(){
-    this.checkCurrentLogin()
-  },
-  updated(){
-    this.checkCurrentLogin()
-  },
   methods: {
     /*auth() {
       // your code to login user
@@ -87,11 +78,6 @@ export default {
         this.loading = false;
       }, 5000);
     }*/
-    checkCurrentLogin(){//cuando ya haya un usuario logueado, no permite ingresar a la ventana de Login
-      if(this.currentUser){
-        this.$router.replace(this.$route.query.redirect || '/map')
-      }
-    },
     login () {
       console.log('HOLI');
       this.$http.post('http://localhost:3000/user/login', {numero_celular: this.userLogin.email, password: this.userLogin.password })
@@ -107,12 +93,10 @@ export default {
       }
       this.userLogin.error = false
       localStorage.token = req.data.token
-      this.$store.dispatch('login')
-      this.$router.replace(this.$route.query.redirect || '/map')
+      this.$router.replace(this.$route.query.redirect || '/test')
     },
     loginFailed () {
-      this.userLogin.error = 'Fallo en el login: '+this.userLogin.msg
-      this.$store.dispatch('logout')
+      //this.userLogin.error = 'Fallo en el login: '+this.userLogin.msg
       delete localStorage.token
     }
   }
