@@ -1,7 +1,5 @@
 <template >
-
-  <div class="map">
-    <l-map  id="myMap" ref="myMap" :zoom="zoom" :center="center" v-on:click="selectSite">
+    <l-map class="map" id="myMap" ref="myMap" :zoom="zoom" :center="center" v-on:click="selectSite">
         <l-tile-layer :url="url"></l-tile-layer>
         <!--<l-marker :lat-lng="markerLatLng" :icon="iconTaxi"></l-marker> -->
         <l-marker v-for="(taxi,i) in taxis" :key="i" :lat-lng="taxi.coordenadas" :icon="iconTaxi">
@@ -9,9 +7,9 @@
             Nombre {{taxi.nombre}}
             Telefono {{taxi.numero_celular}}
           </l-tooltip>
-         </l-marker>
+        </l-marker>
+        
       </l-map>
-  </div>
 
 
 </template>
@@ -34,6 +32,7 @@ export default {
       url:'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png',
       zoom:13,
       center:[3.42158, -76.5205],
+      positionSelected: null,
       markerLatLng: L.latLng(3.42158, -76.5205),
       iconTaxi:L.icon({
         iconUrl:'static/taxi.png',
@@ -52,6 +51,7 @@ export default {
   },
   methods:{
     selectSite(e){
+      //this.positionSelected=[e.latlng.lat, e.latlng.lng]
       this.markerLatLng=[e.latlng.lat,e.latlng.lng]
     },
     consultaTaxis(){

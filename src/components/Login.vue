@@ -1,28 +1,31 @@
 <template>
   <div class="centered-container">
-    <md-content class="md-elevation-3">
+    <md-content novalidate class="md-elevation-3">
       <div class="title">
         <img class="img" src="../assets/taxi.jpg">
         <div class="md-title">NOT THAT EASY TAXI</div>
         <div class="md-body-1">Ready for start your trip?</div>
       </div>
 
-      <div class="form" @submit.prevent="login"> <!--agrego @submit.prevent porque si lo omitimos Vue ejecutara el método, pero luego permitiría que el evento se disparara en el navegador, desordenando nuestro flujo.-->
+      <form class="md-layout-item" @submit.prevent="login"> <!--agrego @submit.prevent porque si lo omitimos Vue ejecutara el método, pero luego permitiría que el evento se disparara en el navegador, desordenando nuestro flujo.-->
         <!--<div class="alert alert-danger" v-if="userLogin.error">{{ userLogin.error }}</div>-->
-        <md-field>
-          <label>Numero</label>
-          <md-input v-model="userLogin.email" autofocus></md-input>
+        <md-field :class="getValidationClass('user')">
+          <label for="">Numero</label>
+          <md-input v-model="userLogin.user" autofocus></md-input>
+          <span class="md-error" v-if="!$v.userLogin.user.required">Emm.. prueba escribiendo el usuario.</span>
+          <span class="md-error" v-else-if="!$v.userLogin.user.numeric"> pureba usando un numero.</span>
         </md-field>
 
-        <md-field md-has-password>
+        <md-field md-has-password :class="getValidationClass('password')">
           <label>Password</label>
           <md-input v-model="userLogin.password" type="password"></md-input>
+          <span class="md-error" v-if="!$v.userLogin.password.required">Quizas debas escribir la contraseña.</span>
         </md-field>
-      </div>
+      </form>
 
       <div class="actions md-layout md-alignment-center-space-between">
-        <a href="/resetpassword">Reset password</a>
-        <md-button class="md-raised md-primary" type="submit" @click="login">Log in</md-button>
+        <a href="/">Reset password</a>
+        <md-button class="md-dense md-raised md-primary" type="submit" @click="login">Log in</md-button>
       </div>
 
       <div class="loading-overlay" v-if="loading">
@@ -38,6 +41,7 @@ import { validationMixin } from 'vuelidate'
 import {
   required,
   email,
+  numeric,
   minLength,
   maxLength
 } from 'vuelidate/lib/validators'
@@ -46,11 +50,12 @@ import { mapGetters } from 'vuex'
 
 export default {
   name:'Login',
-  data() {
+  mixins: [validationMixin],
+  data: () => {
     return {
       loading: false,
       userLogin: {
-        email: "",
+        user: "",
         password: "",
         error:false,
         msg:''
@@ -58,9 +63,10 @@ export default {
     };
   },
   validations:{
-    login: {
+    userLogin: {
       user:{
-        required
+        required,
+        numeric
       },
       password:{
         required
@@ -78,9 +84,19 @@ export default {
         this.loading = false;
       }, 5000);
     }*/
+    getValidationClass (fieldName) {
+      const field = this.$v.userLogin[fieldName]
+
+      if (field) {
+        return {
+          'md-invalid': field.$invalid && field.$dirty
+        }
+      }
+    },
     login () {
-      console.log('HOLI');
-      this.$http.post('http://localhost:3000/user/login', {numero_celular: this.userLogin.email, password: this.userLogin.password })
+      this.$v.userLogin.$touch();
+    //  console.log('HOLI');
+      this.$http.post('http://localhost:3000/user/login', {numero_celular: this.userLogin.user, password: this.userLogin.password })
         .then(request => this.loginSuccessful(request))
         .catch(() => this.loginFailed())
     },
@@ -103,7 +119,7 @@ export default {
 }
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .centered-container {
   display: flex;
   align-items: center;

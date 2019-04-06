@@ -17,8 +17,18 @@
         </md-toolbar>
         <md-list>
           <md-list-item>
-            <router-link :to="{ name: 'Register' }">
+            <router-link :to="{ name: 'register' }">
               <md-button class="md-primary"> Register </md-button>
+            </router-link>
+          </md-list-item>
+          <md-list-item>
+            <router-link :to="{ name: 'map' }">
+              <md-button class="md-primary">Map</md-button>
+            </router-link>
+          </md-list-item>
+          <md-list-item>
+            <router-link :to="{ name: 'test' }">
+              <md-button class="md-primary">test</md-button>
             </router-link>
           </md-list-item>
         </md-list>
@@ -74,7 +84,7 @@ export default {
     //this.checkCurrentLogin() //genere un bug ni el hijueputa
   },
   created(){
-  //  this.checkCurrentLogin() // para facilitar las pruebas en el desarrollo
+    this.checkCurrentLogin() // para facilitar las pruebas en el desarrollo
   },
   methods: {
     checkCurrentLogin(){
