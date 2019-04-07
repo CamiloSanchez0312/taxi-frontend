@@ -8,34 +8,37 @@
     </div> -->
 
     <div class="app">
-      <md-button id="navButton" class="md-icon-button md-primary" @click="showNav = true">
+      <md-toolbar class="md-transparent">
+      <md-button id="navButton" class="md-fixed" @click="showNav = true">
             <md-icon>menu</md-icon>
       </md-button>
-      <md-drawer class="drawer":md-active.sync="showNav">
+      </md-toolbar>
+      <md-drawer class="drawer" :md-active.sync="showNav">
         <md-toolbar class="md-transparent" md-elevation="0">
           <span class="md-title">My App name</span>
         </md-toolbar>
         <md-list>
           <md-list-item>
-            <router-link :to="{ name: 'register' }">
-              <md-button class="md-primary"> Register </md-button>
-            </router-link>
+            <a href="/register">
+              <md-button class="md-primary">register</md-button>
+            </a>
           </md-list-item>
-          <md-list-item>
-            <router-link :to="{ name: 'map' }">
+          <md-list-item v-if="logeado">
+            <a href="/map">
               <md-button class="md-primary">Map</md-button>
-            </router-link>
+            </a>
           </md-list-item>
           <md-list-item>
-            <router-link :to="{ name: 'test' }">
+            <a href="/test">
               <md-button class="md-primary">test</md-button>
-            </router-link>
+            </a>
           </md-list-item>
         </md-list>
           </md-drawer>
-        <md-content id="content">
-            <router-view></router-view>
-          </md-content>
+          <md-content>
+            <router-view>
+            </router-view>
+            </md-content>
 
 
     </div>
@@ -50,7 +53,6 @@ import Map from './components/map.vue'
 import {LMap, LTileLayer, LMarker } from 'vue2-leaflet';
 
 import Register from './components/Sign_up.vue';
-import toolbar from './components/toolbar.vue'
 import { mapGetters } from 'vuex'
 
 
@@ -64,8 +66,7 @@ export default {
     LTileLayer,
     LMarker,
     Map,
-    Register,
-    toolbar
+    Register
 
   },
   data(){
@@ -88,7 +89,7 @@ export default {
   },
   methods: {
     checkCurrentLogin(){
-      if (!this.currentUser && this.$route.path !== '/') {
+      if (!this.currentUser && this.$route.path !== '/' && this.$route.path !== '/register') {
         this.$router.push('/?redirect=' + this.$route.path) //cuando se intenta acceder a una ruta sin estar logueado, lo redirige a '/' y cuando se loguea lo manda a dicha ruta
       }
     }
@@ -125,16 +126,17 @@ export default {
   z-index: 1000;
 },
 #navButton{
-  z-index: 100;
-  left:1300px;
+  z-index: 1000;
+  position: fixed;
 },
 .drawer{
-  padding: 0;
-  margin: 0;
+  padding: 50;
+  margin: 50;
   z-index: 10000;
 },
-#content{
-  z-index: 0;
+.md-content{
+  z-index: -500;
+  padding-top: 10%;
 }
 
 </style>

@@ -24,7 +24,7 @@
       </form>
 
       <div class="actions md-layout md-alignment-center-space-between">
-        <a href="/">Reset password</a>
+        <a href="/register">Reset password</a>
         <md-button class="md-dense md-raised md-primary" type="submit" @click="login">Log in</md-button>
       </div>
 
@@ -96,9 +96,11 @@ export default {
     login () {
       this.$v.userLogin.$touch();
     //  console.log('HOLI');
+      if (!this.$v.$invalid) {
       this.$http.post('http://localhost:3000/user/login', {numero_celular: this.userLogin.user, password: this.userLogin.password })
         .then(request => this.loginSuccessful(request))
         .catch(() => this.loginFailed())
+      }
     },
     loginSuccessful (req) {
       console.log(req);

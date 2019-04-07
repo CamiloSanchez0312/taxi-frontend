@@ -63,7 +63,7 @@
         </md-card-actions>
       </md-card>
 
-      <md-snackbar :md-active.sync="userSaved">The user {{ lastUser }} was saved with success!</md-snackbar>
+      <md-snackbar :md-active.sync="userSaved">{{msg}}</md-snackbar>
     </form>
   </md-content>
 </template>
@@ -91,7 +91,8 @@
       },
       userSaved: false,
       sending: false,
-      lastUser: null
+      lastUser: null,
+      msg: null
     }),
     validations: {
       form: {
@@ -141,25 +142,42 @@
         this.form.email = null
       },
       saveUser () {
-        this.sending = true
+      //  this.sending = true //may be needed later
+        this.$http.post('http://localhost:3000/user/signup',
+        {numero_celular: this.form.numero_celular,
+           nombre: this.form.Name,
+            direccion: this.form.direccion,
+             num_tarjetacredito: this.form.numero_targeta,
+             password: this.form.password })
+          .then(request => this.$router.replace('/'))
+          .catch(error => {this.msg=error.body.msg
+          this.userSaved=true})
 
         // Instead of this timeout, here you can call your API
 
-        window.setTimeout(() => {
+      /*  window.setTimeout(() => {
           this.lastUser = `${this.form.firstName} ${this.form.lastName}`
           this.userSaved = true
           this.sending = false
           this.clearForm()
-        }, 1500)
+        }, 1500)*/
       },
       validateUser () {
         this.$v.$touch()
-        console.log("validateUser-in")
+        this.saveUser()
         if (!this.$v.$invalid) {
-          console.log("calidateUser-if")
-          this.saveUser()
+
+        }
+      },signup(req){
+        if(req.status==200){
+          this.$router.replace('/');
+        }else{
+          this.msg=req.body.msg;
+          console.log(this.msg);
+
         }
       }
+
     }
   }
 </script>
