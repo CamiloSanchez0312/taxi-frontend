@@ -9,20 +9,21 @@
         <md-card-content>
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('firstName')">
+              <md-field :class="getValidationClass('Name')">
                 <label for="first-name">Nombre</label>
-                <md-input name="first-name" id="first-name" autocomplete="given-name" v-model="form.firstName" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.firstName.required">The first name is required</span>
-                <span class="md-error" v-else-if="!$v.form.firstName.minlength">Invalid first name</span>
+                <md-input name="first-name" id="first-name" autocomplete="given-name" v-model="form.Name" :disabled="sending" />
+                <span class="md-error" v-if="!$v.form.Name.required">The first name is required</span>
+                <span class="md-error" v-else-if="!$v.form.Name.minlength">Invalid first name</span>
               </md-field>
             </div>
 
             <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('lastName')">
+              <md-field :class="getValidationClass('numero_celular')">
                 <label for="last-name">Numero Celular</label>
-                <md-input name="last-name" id="last-name" autocomplete="family-name" v-model="form.numero_celular" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.lastName.required">The Cellphone Number is required</span>
-                <span class="md-error" v-else-if="!$v.form.lastName.minlength">Invalid Number</span>
+                <md-input name="numero_celular" id="numero_celular" autocomplete="family-name" v-model="form.numero_celular" :disabled="sending" />
+                <span class="md-error" v-if="!$v.form.numero_celular.required">The Cellphone Number is required</span>
+                <span class="md-error" v-else-if="!$v.form.numero_celular.minlength">Invalid Number</span>
+                <span class="md-error" v-else-if="!$v.form.numero_celular.numeric">must be a number</span>
               </md-field>
             </div>
           </div>
@@ -31,28 +32,28 @@
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('lastName')">
                 <label for="last-name">Numero de Tarjeta</label>
+
                 <md-input name="numero_targeta" id="targeta" autocomplete="family-name" v-model="form.numero_targeta" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.lastName.required">The Credit car Number is required</span>
-                <span class="md-error" v-else-if="!$v.form.lastName.minlength">Invalid Number</span>
+                <span class="md-error" v-if="!$v.form.numero_targeta.required">The Credit car Number is required</span>
+                <span class="md-error" v-else-if="!$v.form.numero_targeta.minlength">Invalid Number</span>
               </md-field>
             </div>
 
 
             <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('age')">
-                <label for="age">Direccion</label>
-                <md-input type="number" id="age" name="age" autocomplete="age" v-model="form.direccion" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.age.required">The  is required</span>
-                <span class="md-error" v-else-if="!$v.form.age.maxlength">Invalid age</span>
+              <md-field :class="getValidationClass('direccion')">
+                <label for="direccion">Direccion</label>
+                <md-input id="direccion" name="direccion" autocomplete="direction" v-model="form.direccion" :disabled="sending" />
+                <span class="md-error" v-if="!$v.form.direccion.required">The Direction is required</span>
+                <span class="md-error" v-else-if="!$v.form.direccion.maxlength">Invalid Direction</span>
               </md-field>
             </div>
           </div>
 
-          <md-field :class="getValidationClass('email')">
-            <label for="email">password</label>
-            <md-input type="password" name="email" id="pass" autocomplete="password" v-model="form.password" :disabled="sending" />
-            <span class="md-error" v-if="!$v.form.email.required">The password is required</span>
-            <span class="md-error" v-else-if="!$v.form.email.email">Invalid password</span>
+          <md-field :class="getValidationClass('password')">
+            <label for="password">password</label>
+            <md-input type="password" name="password" id="password" autocomplete="password" v-model="form.password" :disabled="sending" />
+            <span class="md-error" v-if="!$v.form.password.required">The password is required</span>
           </md-field>
         </md-card-content>
 
@@ -73,20 +74,20 @@
   import {
     required,
     email,
+    numeric,
     minLength,
     maxLength
   } from 'vuelidate/lib/validators'
 
   export default {
-    name: 'FormValidation',
+    name: 'FormRegister',
     mixins: [validationMixin],
-    data: () => ({
+      data: () => ({
       form: {
-        firstName: null,
+        Name: null,
         numero_celular: null,
         num_tarjetacredito: null,
         direccion: null,
-        email: null,
         password: null
       },
       userSaved: false,
@@ -95,24 +96,30 @@
     }),
     validations: {
       form: {
-        firstName: {
+        Name: {
           required,
           minLength: minLength(3)
         },
-        lastName: {
+        numero_celular: {
           required,
-          minLength: minLength(3)
+          minLength: minLength(3),
+          numeric
         },
-        age: {
+        direccion: {
           required,
-          maxLength: maxLength(3)
+          maxLength: maxLength(10)
         },
         gender: {
           required
         },
-        email: {
+        password: {
+          required
+        },
+        numero_targeta: {
           required,
-          email
+          numeric,
+          maxLength: maxLength(16),
+          minLength: minLength(16)
         }
       }
     },
@@ -138,6 +145,7 @@
         this.sending = true
 
         // Instead of this timeout, here you can call your API
+
         window.setTimeout(() => {
           this.lastUser = `${this.form.firstName} ${this.form.lastName}`
           this.userSaved = true
@@ -147,8 +155,9 @@
       },
       validateUser () {
         this.$v.$touch()
-
+        console.log("validateUser-in")
         if (!this.$v.$invalid) {
+          console.log("calidateUser-if")
           this.saveUser()
         }
       }
