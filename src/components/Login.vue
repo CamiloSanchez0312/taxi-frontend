@@ -48,7 +48,7 @@ import {
   minLength,
   maxLength
 } from 'vuelidate/lib/validators'
-import { mapGetters } from 'vuex'
+
 
 
 export default {
@@ -100,6 +100,8 @@ export default {
     checkCurrentLogin(){//cuando ya haya un usuario logueado, no permite ingresar a la ventana del login
       if(this.currentUser){
         this.$router.replace(this.$route.query.redirect || '/map')
+      }
+    },
 
     getValidationClass (fieldName) {
       const field = this.$v.userLogin[fieldName]

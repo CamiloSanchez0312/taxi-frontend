@@ -30,6 +30,7 @@
 
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
+
               <md-field :class="getValidationClass('lastName')">
                 <label for="last-name">Numero de Tarjeta</label>
 
