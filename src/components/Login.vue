@@ -117,9 +117,11 @@ export default {
     login () {
       this.$v.userLogin.$touch();
     //  console.log('HOLI');
+      if (!this.$v.$invalid) {
       this.$http.post('http://localhost:3000/user/login', {numero_celular: this.userLogin.user, password: this.userLogin.password })
         .then(request => this.loginSuccessful(request))
         .catch(() => this.loginFailed())
+      }
     },
     loginSuccessful (req) {
       console.log(req);
