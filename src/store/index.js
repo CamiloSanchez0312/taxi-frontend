@@ -32,7 +32,7 @@ export const store = new Vuex.Store({
       .then(response => {
         const arr =[]
         const data = response.data
-        console.log(data);
+        //console.log(data);
         for(var i in data){
           var numero_celular = data[i].numero_celular
           var nombre = data[i].nombre

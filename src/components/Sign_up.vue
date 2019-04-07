@@ -30,7 +30,7 @@
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('lastName')">
-                <label for="last-name">Numero de Targeta</label>
+                <label for="last-name">Numero de Tarjeta</label>
                 <md-input name="numero_targeta" id="targeta" autocomplete="family-name" v-model="form.numero_targeta" :disabled="sending" />
                 <span class="md-error" v-if="!$v.form.lastName.required">The Credit car Number is required</span>
                 <span class="md-error" v-else-if="!$v.form.lastName.minlength">Invalid Number</span>
@@ -84,7 +84,7 @@
       form: {
         firstName: null,
         numero_celular: null,
-        numero_targeta: null,
+        num_tarjetacredito: null,
         direccion: null,
         email: null,
         password: null

@@ -21,7 +21,7 @@
       </div>
 
       <div class="actions md-layout md-alignment-center-space-between">
-        <a href="/resetpassword">Reset password</a>
+        <a href="/register">Registrarse</a>
         <md-button class="md-raised md-primary" type="submit" @click="login">Log in</md-button>
       </div>
 
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 import { validationMixin } from 'vuelidate'
 import {
   required,
@@ -67,6 +68,15 @@ export default {
 
     }
   },
+  computed:{
+  ...mapGetters({currentUser: 'currentUser'})
+  },
+  created(){
+    this.checkCurrentLogin()
+  },
+  updated(){
+    this.checkCurrentLogin()
+  },
   methods: {
     /*auth() {
       // your code to login user
@@ -77,6 +87,11 @@ export default {
         this.loading = false;
       }, 5000);
     }*/
+    checkCurrentLogin(){//cuando ya haya un usuario logueado, no permite ingresar a la ventana del login
+      if(this.currentUser){
+        this.$router.replace(this.$route.query.redirect || '/map')
+      }
+    },
     login () {
       console.log('HOLI');
       this.$http.post('http://localhost:3000/user/login', {numero_celular: this.userLogin.email, password: this.userLogin.password })
