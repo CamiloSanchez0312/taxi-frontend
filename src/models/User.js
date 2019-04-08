@@ -9,8 +9,7 @@ export default class User{
       return null
     }
   }
-  constructor({numero_celular,password}){
-    this.numero_celular = numero_celular
-    this.password = password
+  constructor(obj){
+    this.numero_celular = obj.userExistent
   }
 }

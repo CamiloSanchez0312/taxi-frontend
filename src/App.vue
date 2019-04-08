@@ -91,7 +91,7 @@ export default {
   methods: {
     checkCurrentLogin(){
       if (!this.currentUser && this.$route.path !== '/' &&  this.$route.path !== '/register') {
-        this.$router.push('/?redirect=' + this.$route.path) //cuando se intenta acceder a una ruta sin estar logueado, lo redirige a '/' y cuando se loguea lo manda a dicha ruta
+        this.$router.push('/?redirect=' + this.$route.name) //cuando se intenta acceder a una ruta sin estar logueado, lo redirige a '/' y cuando se loguea lo manda a dicha ruta
       }
     }
   }

@@ -14,8 +14,6 @@ import Axios from './backend/vue-axios/axios.js'
 import router from './router'
 import {store} from './store/index.js'
 Vue.use(VueMaterial);
-
-
 Vue.config.productionTip = false
 Vue.use(VueResourse);
 Vue.use(VueRouter);

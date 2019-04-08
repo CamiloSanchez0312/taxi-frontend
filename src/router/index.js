@@ -4,6 +4,7 @@ import Login from '@/components/Login.vue'
 import Test from '@/components/test.vue'
 import Map from '@/components/map.vue'
 import Register from '@/components/Sign_up.vue';
+import NewFavorite from '@/components/newfavorite.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -28,6 +29,11 @@ export default new Router({
       path: '/register',
       name:'register',
       component:Register
+    },
+    {
+      path:'/newfavorite',
+      name:'newfavorite',
+      component:NewFavorite
     }
   ]
 })

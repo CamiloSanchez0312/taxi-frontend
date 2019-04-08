@@ -3,13 +3,38 @@
     <l-map class="map" id="myMap" ref="myMap" :zoom="zoom" :center="center" v-on:click="selectSite">
         <l-tile-layer :url="url"></l-tile-layer>
         <!--<l-marker :lat-lng="markerLatLng" :icon="iconTaxi"></l-marker> -->
+        <div>
         <l-marker v-for="(taxi,i) in taxis" :key="i" :lat-lng="taxi.coordenadas" :icon="iconTaxi">
           <l-tooltip>
             <u>Nombre:</u> <b>{{taxi.nombre}}</b>
             <u>Telefono:</u> <b>{{taxi.numero_celular}}</b>
           </l-tooltip>
         </l-marker>
-        <l-marker v-if="markerLatLng" :lat-lng="markerLatLng"> </l-marker>
+      </div>
+      <div> <!--puse los for en dos div distintos porque generaba un error de llaves duplicadas-->
+        <l-marker v-for="(favorito,j) in favoritos" :key="j" :lat-lng="favorito.coordenadas" :icon="iconFavorito">
+          <l-tooltip>
+            <u>Numero:</u> <b>{{favorito.num_favorito}}</b>
+            <u>Nombre:</u> <b>{{favorito.nombre}}</b>
+          </l-tooltip>
+          <l-popup>
+            <router-link :to="{ name: 'newfavorite', params: {} }">
+              <md-button class="md-raised md-primary">
+                Agregar Favorito
+              </md-button>
+            </router-link>
+          </l-popup>
+        </l-marker>
+      </div>
+        <l-marker v-if="markerLatLng" :lat-lng="markerLatLng" >
+            <l-popup>
+              <md-button class="md-icon-button">
+                <md-icon>
+                  favorite_border
+                </md-icon>
+              </md-button>
+            </l-popup>
+        </l-marker>
       </l-map>
       <md-button class="md-fab" >
         <md-icon>my_location</md-icon>
@@ -41,16 +66,25 @@ export default {
         iconUrl:'static/taxi.png',
         iconSize: [50, 45],
         iconAnchor: [40, 37]
+      }),
+      iconFavorito:L.icon({
+        iconUrl:'static/favorito.png',
+        iconSize: [50, 45],
+        iconAnchor: [40, 37]
       })
     }
   },
   computed:{
     taxis(){
       return this.$store.getters.getTaxis
+    },
+    favoritos(){
+      return this.$store.getters.getFavoritos
     }
   },
   beforeCreate(){
     this.$store.dispatch('taxis')
+    this.$store.dispatch('favoritos')
   },
   methods:{
     selectSite(e){

@@ -132,7 +132,7 @@ export default {
       }
       this.userLogin.error = false
       localStorage.token = req.data.token
-      this.$router.replace(this.$route.query.redirect || '/test')
+      this.$router.push({name:'map'})
     },
     loginFailed () {
       //this.userLogin.error = 'Fallo en el login: '+this.userLogin.msg
