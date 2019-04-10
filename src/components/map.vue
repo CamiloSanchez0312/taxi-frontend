@@ -18,13 +18,16 @@
             <u>Nombre:</u> <b>{{favorito.nombre}}</b>
           </l-tooltip>
           <l-popup>
-            <router-link :to="{ name: 'newfavorite', params: {} }">
-              <md-button class="md-raised md-primary">
-                Agregar Favorito
+            <!--<router-link :to="{ name: 'newfavorite', params: {} }"> -->
+              <md-button v-b-modal.modify class="md-raised md-primary" v-on:click.prevent="holi">
+                Modificar Favorito
               </md-button>
-            </router-link>
+            <!--</router-link>-->
           </l-popup>
         </l-marker>
+        <b-modal id="modify" tittle="Modificar favorito">
+          <button> holi </button><!--toca mirar como se acomoda el b-modal-->
+        </b-modal>
       </div>
         <l-marker v-if="markerLatLng" :lat-lng="markerLatLng" >
             <l-popup>
@@ -93,6 +96,9 @@ export default {
     },
     consultaTaxis(){
       this.$store.distpatch('taxis')
+    },
+    holi(){
+      console.log('HOLIWI :3');
     }
   },
   mounted () {
