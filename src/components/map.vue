@@ -18,27 +18,18 @@
             <u>Nombre:</u> <b>{{favorito.nombre}}</b>
           </l-tooltip>
           <l-popup>
-              <md-button @click="showDialogMod=true" v-on:click="modfavorite.numFav=favorito.num_favorito" class="md-raised md-primary" >
-                Modificar Favorito
+              <md-button @click="showDialogMod=true" v-on:click="modfavorite.numFav=favorito.num_favorito" class="md-icon-button" >
+                <md-icon>
+                  update
+                </md-icon>
+              </md-button>
+              <md-button v-on:click="borrarFavorito(favorito.num_favorito)" class="md-icon-button" >
+                <md-icon>
+                  delete
+                </md-icon>
               </md-button>
           </l-popup>
         </l-marker>
-        <!--<b-modal id="modify" tittle="Modificar favorito">
-          <button> holi </button> //toca mirar como se acomoda el b-modal
-        </b-modal>-->
-        <!--<div>
-        <md-dialog :md-active.sync="showDialog">
-          <md-dialog-title>Modificar Favorito</md-dialog-title>
-          <md-field>
-            <label>Nuevo nombre:</label>
-            <md-input name="Nombre:" id="newNomFav" placeholder="Nuevo nombre" v-model="newfavorite.newNomFav"/>
-          </md-field>
-          <md-dialog-actions>
-            <md-button class="md-primary" @click="showDialog = false" v-on:click.prevent="holi">Close</md-button>
-            <md-button class="md-primary" @click="showDialog = false">Save</md-button>
-          </md-dialog-actions>
-        </md-dialog>
-      </div>-->
       <div>
         <md-dialog-prompt
         :md-active.sync="showDialogMod"
@@ -153,6 +144,12 @@ export default {
       .then(response => {
         this.$store.dispatch('favoritos')
         this.newfavorite.nombre=null
+      })
+    },
+    borrarFavorito(id){
+      this.$store.dispatch('borrarFavorito',id)
+      .then(response => {
+        this.$store.dispatch('favoritos')
       })
     }
   },

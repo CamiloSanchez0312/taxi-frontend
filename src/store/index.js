@@ -84,13 +84,24 @@ export const store = new Vuex.Store({
       })
     },
     crearFavorito(context,fav){
-      return new Promise((resolve,reject) =>{
+      return new Promise((resolve,reject) => {
         axios.post('http://localhost:3000/favorito/create',{
           numero_celular:User.from(localStorage.token).numero_celular,
           nombre:fav.nombre,
           lat:fav.lat,
           lon:fav.lon
         })
+        .then(res => {
+          resolve(res)
+        })
+        .catch(err => {
+          reject(err)
+        })
+      })
+    },
+    borrarFavorito(context,id){
+      return new Promise((resolve,reject) => {
+        axios.delete('http://localhost:3000/favorito/delete/'+User.from(localStorage.token).numero_celular+'/'+id)
         .then(res => {
           resolve(res)
         })
