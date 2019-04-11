@@ -66,6 +66,38 @@ export const store = new Vuex.Store({
         context.commit('favoritos',arr)
       })
       .catch( err => console.log(err))
+    },
+    modificarFavorito(context,fav){
+      return new Promise((resolve,reject)=>{
+        axios.post('http://localhost:3000/favorito/update',{
+          numero_celular:User.from(localStorage.token).numero_celular,
+          newNombre:fav.newNomFav,
+          id:fav.numFav
+        })
+        .then(res => {
+          resolve(res)
+        })
+        .catch(err =>{
+          reject(err)
+          console.log(err);
+        })
+      })
+    },
+    crearFavorito(context,fav){
+      return new Promise((resolve,reject) =>{
+        axios.post('http://localhost:3000/favorito/create',{
+          numero_celular:User.from(localStorage.token).numero_celular,
+          nombre:fav.nombre,
+          lat:fav.lat,
+          lon:fav.lon
+        })
+        .then(res => {
+          resolve(res)
+        })
+        .catch(err => {
+          reject(err)
+        })
+      })
     }
   },
   getters:{
