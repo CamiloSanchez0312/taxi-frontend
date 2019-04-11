@@ -18,20 +18,38 @@
           <span class="md-title">My App name</span>
         </md-toolbar>
         <md-list>
-          <md-list-item>
-            <a href="/register">
+          <md-list-item v-if="!currentUser">
+            <router-link :to="{ name: 'Login', params: {} }">
+              <md-button class="md-primary">login</md-button>
+            </router-link>
+          </md-list-item>
+          <md-list-item v-if="!currentUser">
+            <router-link :to="{ name: 'register', params: {} }">
               <md-button class="md-primary">register</md-button>
-            </a>
+            </router-link>
           </md-list-item>
-          <md-list-item v-if="logeado">
-            <a href="/map">
-              <md-button class="md-primary">Map</md-button>
-            </a>
+          <md-list-item v-if="currentUser">
+            <router-link :to="{ name: 'map', params: {} }">
+              <md-button class="md-primary">Mapa</md-button>
+            </router-link>
           </md-list-item>
-          <md-list-item>
-            <a href="/test">
+          <md-list-item v-if="!currentUser">
+            <router-link :to="{ name: 'test', params: {} }">
               <md-button class="md-primary">test</md-button>
-            </a>
+            </router-link>
+          </md-list-item>
+          <md-list-item v-if="currentUser">
+            <router-link :to="{ name: 'profile', params: {} }">
+              <md-button class="md-primary">Perfil</md-button>
+            </router-link>
+          </md-list-item>
+          <md-list-item v-if="currentUser">
+            <router-link :to="{ name: 'favoritos', params: {} }">
+              <md-button class="md-primary">Favoritos</md-button>
+            </router-link>
+          </md-list-item>
+          <md-list-item v-if="currentUser">
+              <md-button v-on:click="logout" class="md-primary">Salir</md-button>
           </md-list-item>
         </md-list>
           </md-drawer>
@@ -50,6 +68,7 @@
 import Test from './components/test.vue'
 import Login from './components/Login.vue'
 import Map from './components/map.vue'
+import Profile from './components/profile.vue'
 import {LMap, LTileLayer, LMarker } from 'vue2-leaflet';
 
 import Register from './components/Sign_up.vue';
@@ -67,7 +86,6 @@ export default {
     LMarker,
     Map,
     Register
-
   },
 
   data(){
@@ -80,6 +98,9 @@ export default {
     ...mapGetters({currentUser:'currentUser'}),
     loadMap(){
 
+    },
+    logueado(){
+      this.$store.getters.user
     }
   },
   updated(){
@@ -93,6 +114,11 @@ export default {
       if (!this.currentUser && this.$route.path !== '/' &&  this.$route.path !== '/register') {
         this.$router.push('/?redirect=' + this.$route.name) //cuando se intenta acceder a una ruta sin estar logueado, lo redirige a '/' y cuando se loguea lo manda a dicha ruta
       }
+    },
+    logout(){
+      delete localStorage.token
+      this.$store.dispatch('logout')
+      this.$router.push({name:'Login'})
     }
   }
 

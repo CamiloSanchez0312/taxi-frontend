@@ -8,7 +8,7 @@
       </div>
 
       <form class="md-layout-item" @submit.prevent="login"> <!--agrego @submit.prevent porque si lo omitimos Vue ejecutara el método, pero luego permitiría que el evento se disparara en el navegador, desordenando nuestro flujo.-->
-        <!--<div class="alert alert-danger" v-if="userLogin.error">{{ userLogin.error }}</div>-->
+        <div class="alert alert-danger" v-if="userLogin.error">{{ userLogin.error }}</div>
         <md-field :class="getValidationClass('user')">
           <label for="">Numero</label>
           <md-input v-model="userLogin.user" autofocus></md-input>
@@ -25,7 +25,8 @@
 
       <div class="actions md-layout md-alignment-center-space-between">
 
-        <a href="/register">Registrarse</a>
+        <!-- <a href="/register">Registrarse</a> -->
+        <router-link :to="{ name: 'register', params: {} }">Registrarse</router-link>
         <md-button class="md-raised md-primary" type="submit" @click="login">Log in</md-button>
 
       </div>
@@ -99,7 +100,7 @@ export default {
 
     checkCurrentLogin(){//cuando ya haya un usuario logueado, no permite ingresar a la ventana del login
       if(this.currentUser){
-        this.$router.replace(this.$route.query.redirect || '/map')
+        this.$router.push({name:'profile'})
       }
     },
 
@@ -132,10 +133,12 @@ export default {
       }
       this.userLogin.error = false
       localStorage.token = req.data.token
+      this.$store.dispatch('login')
       this.$router.push({name:'map'})
     },
     loginFailed () {
-      //this.userLogin.error = 'Fallo en el login: '+this.userLogin.msg
+      this.userLogin.error = 'Fallo en el login: '+this.userLogin.msg
+      this.$store.dispatch('logout')
       delete localStorage.token
     }
   }

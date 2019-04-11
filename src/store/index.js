@@ -22,6 +22,12 @@ export const store = new Vuex.Store({
     },
     favoritos:(state,arr)=>{
       state.sitiosFavoritos=arr
+    },
+    borrarTaxisDisponibles:(state) => {
+      state.taxisDisponibles=[]
+    },
+    borrarSitiosFavoritos:(state) => {
+      state.sitiosFavoritos=[]
     }
   },
   actions:{//desde aqui llamamos a las mutaciones, las acciones pueden ser asincronas
@@ -30,6 +36,8 @@ export const store = new Vuex.Store({
     },
     logout(context){
       context.commit('logout')
+      context.commit('borrarTaxisDisponibles')
+      context.commit('borrarSitiosFavoritos')
     },
     taxis(context){
       axios.get('http://localhost:3000/taxis')

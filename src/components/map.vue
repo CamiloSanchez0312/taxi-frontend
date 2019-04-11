@@ -51,7 +51,7 @@
         @md-confirm="crearFavorito"/>
       </div>
       </div>
-        <l-marker v-if="markerLatLng" :lat-lng="markerLatLng" >
+        <l-marker v-if="markerLatLng" :lat-lng="markerLatLng" :icon="iconLocation">
             <l-popup>
               <md-button class="md-icon-button" @click="showDialogNew=true">
                 <md-icon>
@@ -105,6 +105,11 @@ export default {
         iconUrl:'static/favorito.png',
         iconSize: [50, 45],
         iconAnchor: [40, 37]
+      }),
+      iconLocation:L.icon({
+        iconUrl:'static/add_location.png',
+        iconSize:[50,45],
+        iconAnchor:[40,37]
       })
     }
   },
