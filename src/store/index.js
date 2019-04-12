@@ -8,7 +8,8 @@ export const store = new Vuex.Store({
   state:{
     user: User.from(localStorage.token),
     taxisDisponibles:[],
-    sitiosFavoritos:[]
+    sitiosFavoritos:[],
+    profile:{numero_celular:null,nombre:null,direccion:null,num_tarjetacredito:null}
   },
   mutations:{//para modificar estados, mutaciones son sincronas
     login:(state)=>{
@@ -28,6 +29,9 @@ export const store = new Vuex.Store({
     },
     borrarSitiosFavoritos:(state) => {
       state.sitiosFavoritos=[]
+    },
+    profile:(state,pro) =>{
+      state.profile=pro
     }
   },
   actions:{//desde aqui llamamos a las mutaciones, las acciones pueden ser asincronas
@@ -77,7 +81,7 @@ export const store = new Vuex.Store({
     },
     modificarFavorito(context,fav){
       return new Promise((resolve,reject)=>{
-        axios.post('http://localhost:3000/favorito/update',{
+        axios.post('http://localhost:3000/favorito/',{
           numero_celular:User.from(localStorage.token).numero_celular,
           newNombre:fav.newNomFav,
           id:fav.numFav
@@ -93,7 +97,7 @@ export const store = new Vuex.Store({
     },
     crearFavorito(context,fav){
       return new Promise((resolve,reject) => {
-        axios.post('http://localhost:3000/favorito/create',{
+        axios.post('http://localhost:3000/favorito/',{
           numero_celular:User.from(localStorage.token).numero_celular,
           nombre:fav.nombre,
           lat:fav.lat,
@@ -109,8 +113,21 @@ export const store = new Vuex.Store({
     },
     borrarFavorito(context,id){
       return new Promise((resolve,reject) => {
-        axios.delete('http://localhost:3000/favorito/delete/'+User.from(localStorage.token).numero_celular+'/'+id)
+        axios.delete('http://localhost:3000/favorito/'+User.from(localStorage.token).numero_celular+'/'+id)
         .then(res => {
+          resolve(res)
+        })
+        .catch(err => {
+          reject(err)
+        })
+      })
+    },
+    profile(context){
+      return new Promise((resolve,reject) => {
+        axios.get('http://localhost:3000/profile/'+User.from(localStorage.token).numero_celular)
+        .then(res => {
+          console.log(res.data);
+          context.commit('profile',res.data)
           resolve(res)
         })
         .catch(err => {
@@ -128,6 +145,9 @@ export const store = new Vuex.Store({
     },
     getFavoritos(state){
       return state.sitiosFavoritos
+    },
+    getProfile(state){
+      return state.profile
     }
   }
 })

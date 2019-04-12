@@ -3,7 +3,7 @@
     <form novalidate class="md-layout" @submit.prevent="validateUser">
       <md-card class="md-layout-item md-size-50 md-small-size-100">
         <md-card-header>
-          <div class="md-title">Users</div>
+          <div class="md-title">Profile</div>
         </md-card-header>
 
         <md-card-content>
@@ -50,18 +50,18 @@
               </md-field>
             </div>
           </div>
-
+          <!--
           <md-field :class="getValidationClass('password')">
             <label for="password">password</label>
             <md-input type="password" name="password" id="password" autocomplete="password" v-model="form.password" :disabled="sending" />
             <span class="md-error" v-if="!$v.form.password.required">The password is required</span>
-          </md-field>
+          </md-field>-->
         </md-card-content>
 
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
         <md-card-actions>
-          <md-button type="submit" class="md-primary" :disabled="sending">Create user</md-button>
+          <md-button type="submit" class="md-primary" :disabled="sending">Modify user</md-button>
         </md-card-actions>
       </md-card>
 
@@ -89,13 +89,20 @@
         numero_celular: null,
         num_tarjetacredito: null,
         direccion: null,
-        password: null
       },
       userSaved: false,
       sending: false,
       lastUser: null,
       msg: null
     }),
+    computed:{
+      profile(){
+        this.$store.getters.getProfile
+      }
+    },
+    beforeCreate(){
+      this.$store.dispatch('profile')
+    },
     validations: {
       form: {
         Name: {
@@ -145,13 +152,12 @@
       },
       saveUser () {
       //  this.sending = true //may be needed later
-        this.$http.post('http://localhost:3000/user/signup',
+        this.$http.put('http://localhost:3000/user/',
         {numero_celular: this.form.numero_celular,
            nombre: this.form.Name,
             direccion: this.form.direccion,
-             num_tarjetacredito: this.form.numero_targeta,
-             password: this.form.password })
-          .then(request => this.$router.replace('/'))
+             num_tarjetacredito: this.form.numero_targeta,})
+          .then(request => this.$router.push({name:'profile'}))
           .catch(error => {this.msg=error.body.msg
           this.userSaved=true})
 
