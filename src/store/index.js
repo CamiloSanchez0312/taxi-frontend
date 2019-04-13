@@ -146,8 +146,8 @@ export const store = new Vuex.Store({
       return new Promise((resolve,reject) => {
         axios.get('http://localhost:3000/profile/'+User.from(localStorage.token).numero_celular)
         .then(res => {
-          //console.log(res.data);
           context.commit('profile',res.data)
+          //console.log(context.getters.getProfile)
           resolve(res)
         })
         .catch(err => {
