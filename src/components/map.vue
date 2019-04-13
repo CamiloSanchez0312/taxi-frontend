@@ -12,8 +12,8 @@
         </l-marker>
       </div>
       <div>
-        <l-marker :lat-lng="origin" :icon="iconOrigin"></l-marker>
-        <l-marker :lat-lng="destiny" :icon="iconDestiny"></l-marker>
+        <l-marker v-if="origin" :lat-lng="origin" :icon="iconOrigin"></l-marker>
+        <l-marker v-if="destiny" :lat-lng="destiny" :icon="iconDestiny"></l-marker>
         <l-marker v-if="urlocation" :lat-lng="urlocation" :icon="iconCurrentLocation">
           <l-popup>
             <md-button class="md-icon-button" @click="createOrigin(urlocation)">
@@ -28,7 +28,7 @@
             </md-button>
           </l-popup>
         </l-marker>
-        <l-polyline :lat-lngs="polyline.latlng" :color="polyline.color"></l-polyline>
+        <l-polyline v-if="origin&&destiny" :lat-lngs="polyline.latlng" :color="polyline.color"></l-polyline>
       </div>
       <div> <!--puse los for en dos div distintos porque generaba un error de llaves duplicadas-->
         <l-marker v-for="(favorito,j) in favoritos" :key="j" :lat-lng="favorito.coordenadas" :icon="iconFavorito">
@@ -103,7 +103,7 @@
       <md-button class="md-fab" id="md-fab" @click="currentLocation">
         <md-icon>my_location</md-icon>
       </md-button>
-      <md-button class="md-fab" id="taxi" v-on:click="taxistaCercano" @click="showDialogConductor=true">
+      <md-button class="md-fab" id="taxi" v-if="origin&&destiny" v-on:click="taxistaCercano" @click="showDialogConductor=true">
         <md-icon>local_taxi</md-icon>
       </md-button>
       <div>
@@ -129,6 +129,14 @@
           <md-field>
             <label>Modelo:</label>
             <md-input v-model="conductorElegido.modelo" readonly></md-input>
+          </md-field>
+          <md-field>
+            <label>Distancia Conductor:</label>
+            <md-input v-model="conductorElegido.distancia" readonly></md-input>
+          </md-field>
+          <md-field>
+            <label>Distancia Viaje:</label>
+            <md-input v-model="conductorElegido.distanciaViaje" readonly></md-input>
           </md-field>
         </md-content>
           <md-dialog-actions>
@@ -263,9 +271,11 @@ export default {
       })
     },
     createOrigin(coor){
+      this.$store.commit('tripOrigin',coor)
       this.$store.dispatch('createOrigin',coor)
     },
     createDestiny(coor){
+      this.$store.commit('tripDestiny',coor)
       this.$store.dispatch('createDestiny',coor)
     },
     currentLocation(){

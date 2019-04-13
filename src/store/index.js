@@ -10,9 +10,9 @@ export const store = new Vuex.Store({
     taxisDisponibles:[],
     sitiosFavoritos:[],
     profile:{numero_celular:null,nombre:null,direccion:null,num_tarjetacredito:null},
-    tripOrigin:[3.42158, -76.5205], //no los puedo dejar nulos porque da error
-    tripDestiny:[3.42160, -76.5315],
-    infoTaxista:{numero_celular:null,nombre:null,dist:null,matricula:null,marca:null,modelo:null}
+    tripOrigin:null,
+    tripDestiny:null,
+    infoTaxista:{numero_celular:null,nombre:null,distancia:null,distanciaViaje:null,matricula:null,marca:null,modelo:null}
   },
   mutations:{//para modificar estados, mutaciones son sincronas
     login:(state)=>{
@@ -42,12 +42,19 @@ export const store = new Vuex.Store({
     tripDestiny:(state,coor) => {
       state.tripDestiny=coor
     },
+    borrarTripOrigin:(state,coor) => {
+      state.tripOrigin=null
+    },
+    borrarTripDestiny:(state,coor) => {
+      state.tripDestiny=null
+    },
     taxistaCercano:(state,tax) => {
-      const {nom,num,dis,matricula,marca,modelo}=tax
+      const {nom,num,dis,disviaje,matricula,marca,modelo}=tax
       state.infoTaxista={
         nombre:nom,
         numero_celular:num,
-        dist:dis,
+        distancia:dis,
+        distanciaViaje:disviaje,
         matricula,
         marca,
         modelo
@@ -62,6 +69,8 @@ export const store = new Vuex.Store({
       context.commit('logout')
       context.commit('borrarTaxisDisponibles')
       context.commit('borrarSitiosFavoritos')
+      context.commit('borrarTripOrigin')
+      context.commit('borrarTripDestiny')
     },
     taxis(context){
       axios.get('http://localhost:3000/taxis')
@@ -164,8 +173,10 @@ export const store = new Vuex.Store({
     taxistaCercano(context){
       return new Promise((resolve,reject) => {
         axios.post('http://localhost:3000/servicio',{
-          lat:context.getters.getTripOrigin[0],
-          lng:context.getters.getTripOrigin[1]
+          latOr:context.getters.getTripOrigin[0],
+          lngOr:context.getters.getTripOrigin[1], //mando origen y destino para de una vez calcular la distancia y precio del viaje
+          latDes:context.getters.getTripDestiny[0],
+          lngDes:context.getters.getTripDestiny[1]
         })
         .then(res => {
           context.commit('taxistaCercano',res.data)
