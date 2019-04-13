@@ -9,7 +9,10 @@ export const store = new Vuex.Store({
     user: User.from(localStorage.token),
     taxisDisponibles:[],
     sitiosFavoritos:[],
-    profile:{numero_celular:null,nombre:null,direccion:null,num_tarjetacredito:null}
+    profile:{numero_celular:null,nombre:null,direccion:null,num_tarjetacredito:null},
+    tripOrigin:[3.42158, -76.5205], //no los puedo dejar nulos porque da error
+    tripDestiny:[3.42160, -76.5315],
+    infoTaxista:{numero_celular:null,nombre:null,dist:null,matricula:null,marca:null,modelo:null}
   },
   mutations:{//para modificar estados, mutaciones son sincronas
     login:(state)=>{
@@ -32,6 +35,23 @@ export const store = new Vuex.Store({
     },
     profile:(state,pro) =>{
       state.profile=pro
+    },
+    tripOrigin:(state,coor) => {
+      state.tripOrigin=coor
+    },
+    tripDestiny:(state,coor) => {
+      state.tripDestiny=coor
+    },
+    taxistaCercano:(state,tax) => {
+      const {nom,num,dis,matricula,marca,modelo}=tax
+      state.infoTaxista={
+        nombre:nom,
+        numero_celular:num,
+        dist:dis,
+        matricula,
+        marca,
+        modelo
+      }
     }
   },
   actions:{//desde aqui llamamos a las mutaciones, las acciones pueden ser asincronas
@@ -81,7 +101,7 @@ export const store = new Vuex.Store({
     },
     modificarFavorito(context,fav){
       return new Promise((resolve,reject)=>{
-        axios.post('http://localhost:3000/favorito/',{
+        axios.put('http://localhost:3000/favorito/',{
           numero_celular:User.from(localStorage.token).numero_celular,
           newNombre:fav.newNomFav,
           id:fav.numFav
@@ -126,12 +146,44 @@ export const store = new Vuex.Store({
       return new Promise((resolve,reject) => {
         axios.get('http://localhost:3000/profile/'+User.from(localStorage.token).numero_celular)
         .then(res => {
-          console.log(res.data);
+          //console.log(res.data);
           context.commit('profile',res.data)
           resolve(res)
         })
         .catch(err => {
           reject(err)
+        })
+      })
+    },
+    createOrigin(context,p){
+      context.commit('tripOrigin', p)
+    },
+    createDestiny(context,p){
+      context.commit('tripDestiny', p)
+    },
+    taxistaCercano(context){
+      return new Promise((resolve,reject) => {
+        axios.post('http://localhost:3000/servicio',{
+          lat:context.getters.getTripOrigin[0],
+          lng:context.getters.getTripOrigin[1]
+        })
+        .then(res => {
+          context.commit('taxistaCercano',res.data)
+          //console.log(context.getters.getInfoTaxista.nombre);
+          resolve(res)
+        })
+        .catch(err => {
+          reject(err)
+        })
+      })
+    },
+    aceptarServicio(context){
+      return new Promise((resolve,reject) => {
+        axios.post('http://localhost:3000/servicio/acepta',{
+          numero_celular_cond:context.getters.getInfoTaxista.numero_celular,
+          numero_celular_user:User.from(localStorage.token).numero_celular,
+          coordenada_inicio:context.getters.getTripOrigin,
+          coordenada_destino:context.getters.getTripDestiny
         })
       })
     }
@@ -148,6 +200,15 @@ export const store = new Vuex.Store({
     },
     getProfile(state){
       return state.profile
+    },
+    getTripOrigin(state){
+      return state.tripOrigin
+    },
+    getTripDestiny(state){
+      return state.tripDestiny
+    },
+    getInfoTaxista(state){
+      return state.infoTaxista
     }
   }
 })
