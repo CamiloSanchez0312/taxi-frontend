@@ -9,6 +9,7 @@ import NewFavorite from '@/components/newfavorite.vue'
 import Profile from '@/components/profile.vue'
 import Favoritos from '@/components/favoritos.vue'
 import Viaje from '@/components/viaje.vue'
+import Dashboard from '@/components/dashboard.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -58,6 +59,11 @@ export default new Router({
       path:'/viaje',
       name:'viaje',
       component:Viaje
+    },
+    {
+      path:'/dashboard',
+      name:'dashboard',
+      component: Dashboard
     }
   ]
 })

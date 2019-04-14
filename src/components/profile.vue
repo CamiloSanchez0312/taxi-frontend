@@ -203,6 +203,9 @@
   justify-content: center;
   top: 8vh;
   left: 24%;
+  height: 100%;
+  width: 100%;
+  margin: 0%;
 
 }
 .md-progress-bar {

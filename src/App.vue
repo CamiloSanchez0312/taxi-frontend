@@ -162,8 +162,9 @@ export default {
   z-index: 10000;
 },
 .md-content{
-  z-index: -500;
+  z-index: 0;
   padding-top: 10%;
+  position: fixed;
 }
 
 </style>

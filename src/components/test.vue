@@ -4,6 +4,7 @@
     <input type="text" v-model="numberUser.id"name="number" value="">
     <button type="button" name="button" v-on:click= "recibe" > obtain datalist </button>
 <li>{{dataReceibed}}</li>
+<li>{{conductor}}</li>
 
   </div>
 </template>
@@ -18,6 +19,14 @@ export default {
       }
 
     }
+  },
+  computed:{
+    conductor(){
+      return this.$store.getters.getcondutor
+    }
+  },
+  beforeCreate(){
+    this.$store.dispatch('conductor')
   },
   methods: {
     recibe(){
