@@ -3,7 +3,7 @@
     <form novalidate class="md-layout" @submit.prevent="validateUser">
       <md-card class="md-layout-item md-size-50 md-small-size-100">
         <md-card-header>
-          <div class="md-title">Users</div>
+          <div class="md-title">{{type_user}}</div>
         </md-card-header>
 
         <md-card-content>
@@ -42,7 +42,7 @@
 
 
             <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('direccion')">
+              <md-field v-if="!isConductor" :class="getValidationClass('direccion')">
                 <label for="direccion">Direccion</label>
                 <md-input id="direccion" name="direccion" autocomplete="direction" v-model="form.direccion" :disabled="sending" />
                 <span class="md-error" v-if="!$v.form.direccion.required">The Direction is required</span>
@@ -59,9 +59,10 @@
         </md-card-content>
 
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
-
+  <md-switch class="md-primary" v-on:change ="type_user_func" v-model="isConductor" > {{type_user}} </md-switch>
         <md-card-actions>
           <md-button type="submit" class="md-primary" :disabled="sending">Create user</md-button>
+
         </md-card-actions>
       </md-card>
 
@@ -72,6 +73,7 @@
 
 <script>
   import { validationMixin } from 'vuelidate'
+  import {mapGetters, mapState} from 'vuex'
   import {
     required,
     email,
@@ -91,6 +93,8 @@
         direccion: null,
         password: null
       },
+      isConductor: this.conductor,
+      type_user: "User",
       userSaved: false,
       sending: false,
       lastUser: null,
@@ -125,6 +129,9 @@
         }
       }
     },
+    computed:{
+    ...mapGetters({currentUser: 'currentUser'}, {conductor: 'getconductor'})
+    },
     methods: {
       getValidationClass (fieldName) {
         const field = this.$v.form[fieldName]
@@ -133,6 +140,16 @@
           return {
             'md-invalid': field.$invalid && field.$dirty
           }
+        }
+      },
+      type_user_func(){
+        if(this.isConductor){
+          this.type_user="Conductor"
+          this.isConductor=this.conductor=true
+
+        }else{
+          this.type_user="User"
+          this.isConductor=this.conductor=false
         }
       },
       clearForm () {
@@ -144,16 +161,35 @@
         this.form.email = null
       },
       saveUser () {
+        var UrlLogin;
+        if(this.conductor){
+          UrlLogin='http://localhost:3000/driver/signup'
+          this.$http.post(UrlLogin,
+          {numero_celular: this.form.numero_celular,
+             nombre: this.form.Name,
+               num_tarjetacredito: this.form.numero_targeta,
+               password: this.form.password })
+            .then(request => this.$router.replace('/'))
+            .catch(error => {this.msg=error.body.msg
+            this.userSaved=true
+          console.log(error)}
+          )
+        }else{
+          UrlLogin='http://localhost:3000/user/signup'
+          this.$http.post(UrlLogin,
+          {numero_celular: this.form.numero_celular,
+             nombre: this.form.Name,
+              direccion: this.form.direccion,
+               num_tarjetacredito: this.form.numero_targeta,
+               password: this.form.password })
+            .then(request => this.$router.replace('/'))
+            .catch(error => {this.msg=error.body.msg
+            this.userSaved=true
+          console.log(error)}
+          )
+        }
       //  this.sending = true //may be needed later
-        this.$http.post('http://localhost:3000/user/signup',
-        {numero_celular: this.form.numero_celular,
-           nombre: this.form.Name,
-            direccion: this.form.direccion,
-             num_tarjetacredito: this.form.numero_targeta,
-             password: this.form.password })
-          .then(request => this.$router.replace('/'))
-          .catch(error => {this.msg=error.body.msg
-          this.userSaved=true})
+
 
         // Instead of this timeout, here you can call your API
 

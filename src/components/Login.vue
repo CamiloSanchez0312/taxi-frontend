@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 import { validationMixin } from 'vuelidate'
 import {
   required,
@@ -61,7 +61,7 @@ export default {
     return {
       loading: false,
       msgBoolean: false,
-      isConductor:false,
+      isConductor: this.coductor,
       type_user: "Usuario",
       userLogin: {
         user: "",
@@ -84,10 +84,7 @@ export default {
     }
   },
   computed:{
-  ...mapGetters({currentUser: 'currentUser'}),
-  conductor(){
-    return this.$store.getters.getconductor
-  }
+  ...mapGetters({currentUser: 'currentUser'}, {conductor: 'getconductor'})
   },
   created(){
     this.checkCurrentLogin()
