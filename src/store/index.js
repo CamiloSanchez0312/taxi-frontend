@@ -7,6 +7,7 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state:{
     user: User.from(localStorage.token),
+    conductor: false,
     taxisDisponibles:[],
     sitiosFavoritos:[],
     profile:{numero_celular:null,nombre:null,direccion:null,num_tarjetacredito:null},
@@ -35,6 +36,9 @@ export const store = new Vuex.Store({
     },
     profile:(state,pro) =>{
       state.profile=pro
+    },
+    conductor(state, val){
+      state.conductor=val
     },
     tripOrigin:(state,coor) => {
       state.tripOrigin=coor
@@ -220,6 +224,9 @@ export const store = new Vuex.Store({
     },
     getInfoTaxista(state){
       return state.infoTaxista
+    },
+    getconductor(state){
+        return state.conductor
     }
   }
 })
