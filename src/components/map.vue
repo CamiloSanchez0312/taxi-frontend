@@ -107,7 +107,7 @@
       </md-button>
       <div>
         <md-dialog :md-active.sync="showDialogConductor">
-          <md-dialog-title>Info Del conductor</md-dialog-title>
+          <md-dialog-title>Info del conductor y viaje</md-dialog-title>
           <md-list>
             <md-list-item>
             <label>Nombre:</label>
