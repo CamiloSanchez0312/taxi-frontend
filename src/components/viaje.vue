@@ -6,34 +6,58 @@
       <md-card-header>
         <div class="md-title">Viaje</div>
       </md-card-header>
-      <md-field>
+      <div class="md-layout md-gutter">
+
+
+      <div class="md-layout-item md-small-size-100">
+      <md-field >
         <label>Nombre Conductor:</label>
         <md-input v-model="infoTaxista.nombre" disabled></md-input>
       </md-field>
+    </div>
+    <div class="md-layout-item md-small-size-100">
       <md-field>
         <label>Celular Conductor:</label>
         <md-input v-model="infoTaxista.numero_celular" disabled></md-input>
       </md-field>
+      </div>
+        </div>
+          <div class="md-layout md-gutter">
+            <div class="md-layout-item md-small-size-100">
       <md-field>
         <label>Matricula:</label>
         <md-input v-model="infoTaxista.matricula" disabled></md-input>
       </md-field>
+      </div>
+      <div class="md-layout-item md-small-size-100">
       <md-field>
         <label>Marca:</label>
         <md-input v-model="infoTaxista.marca" disabled></md-input>
       </md-field>
+      </div>
+    </div>
+        <div class="md-layout md-gutter">
+          <div class="md-layout-item md-small-size-100">
       <md-field>
         <label>Modelo:</label>
         <md-input v-model="infoTaxista.modelo" disabled></md-input>
       </md-field>
+      </div>
+      <div class="md-layout-item md-small-size-100">
       <md-field>
         <label>Distancia Viaje:</label>
         <md-input v-model="distanciaViaje" disabled></md-input>
       </md-field>
+      </div>
+      </div>
+      <div class="md-layout md-gutter">
+          <div class="md-layout-item md-small-size-100">
       <md-field>
         <label>Precio Viaje:</label>
         <md-input v-model="precioViaje" disabled></md-input>
       </md-field>
+      </div>
+        <div class="md-layout-item md-small-size-100">
         <md-field>
           <md-select v-model="calificacion_servicio" placeholder="Calificacion">
             <md-option value="1">1 Estrella</md-option>
@@ -44,6 +68,9 @@
           </md-select>
         </md-field>
         <h1>{{calificacion_servicio}}</h1>
+        </div>
+        </div>
+
   </md-card-content>
   <md-card-actions>
     <router-link :to="{ name: 'map', params: {} }">
@@ -87,9 +114,9 @@ export default {
 }
 </script>
 
-<style  lang="scss">
+<style  lang="scss" scoped>
 .md-content {
-  position: center;
+  position: relative;
   align-items: center;
   justify-content: center;
   top: 8vh;
