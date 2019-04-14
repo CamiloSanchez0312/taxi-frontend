@@ -63,15 +63,18 @@
         <md-card-actions>
           <md-button type="submit" class="md-primary" :disabled="sending">Modify user</md-button>
           <!-- <md-button @click="fillField" class="md-primary" :disabled="sending">testing</md-button> -->
+            <span>{{this.$store.state.conductor}}</span>
         </md-card-actions>
       </md-card>
 
       <md-snackbar :md-active.sync="userSaved">{{msg}}</md-snackbar>
     </form>
+
   </md-content>
 </template>
 
 <script>
+import {mapGetters, mapState} from 'vuex'
   import { validationMixin } from 'vuelidate'
   import {
     required,
@@ -100,6 +103,15 @@
     computed:{
       profile(){
         return this.$store.getters.getProfile
+      }
+    },
+    ...mapState(['state']),
+    conductor: {
+      set(val){
+        this.$store.commit('conductor', val)
+      },
+      get(){
+        return this.$store.state.conductor
       }
     },
     beforeCreate(){
