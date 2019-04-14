@@ -2,11 +2,10 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import User from '@/models/User.js'
 import axios from 'axios'
-import haversine from 'haversine'
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
-  state:{//WHAT IS VUEX? https://vuex.vuejs.org/
+  state:{
     user: User.from(localStorage.token),
     conductor: false,
     taxisDisponibles:[],
@@ -14,10 +13,7 @@ export const store = new Vuex.Store({
     profile:{numero_celular:null,nombre:null,direccion:null,num_tarjetacredito:null},
     tripOrigin:null,
     tripDestiny:null,
-    infoTaxista:{numero_celular:null,nombre:null,distancia:null,matricula:null,marca:null,modelo:null},
-    distanciaViaje:null,
-    precioViaje:null,
-    // nro_servicio:null
+    infoTaxista:{numero_celular:null,nombre:null,distancia:null,distanciaViaje:null,matricula:null,marca:null,modelo:null}
   },
   mutations:{//para modificar estados, mutaciones son sincronas
     login:(state)=>{
@@ -57,25 +53,17 @@ export const store = new Vuex.Store({
       state.tripDestiny=null
     },
     taxistaCercano:(state,tax) => {
-      const {nom,num,dis,matricula,marca,modelo}=tax
+      const {nom,num,dis,disviaje,matricula,marca,modelo}=tax
       state.infoTaxista={
         nombre:nom,
         numero_celular:num,
         distancia:dis,
+        distanciaViaje:disviaje,
         matricula,
         marca,
         modelo
       }
-    },
-    distanciaViaje:(state,dist) => {
-      state.distanciaViaje=dist
-    },
-    precioViaje:(state,pre) => {
-      state.precioViaje=pre
-    },
-    // nro_servicio:(state,num) => {
-    //   state.nro_servicio = num
-    // }
+    }
   },
   actions:{//desde aqui llamamos a las mutaciones, las acciones pueden ser asincronas
     login(context){
@@ -191,9 +179,12 @@ export const store = new Vuex.Store({
         axios.post('http://localhost:3000/servicio',{
           latOr:context.getters.getTripOrigin[0],
           lngOr:context.getters.getTripOrigin[1], //mando origen y destino para de una vez calcular la distancia y precio del viaje
+          latDes:context.getters.getTripDestiny[0],
+          lngDes:context.getters.getTripDestiny[1]
         })
         .then(res => {
           context.commit('taxistaCercano',res.data)
+          //console.log(context.getters.getInfoTaxista.nombre);
           resolve(res)
         })
         .catch(err => {
@@ -209,62 +200,8 @@ export const store = new Vuex.Store({
           coordenada_inicio:context.getters.getTripOrigin,
           coordenada_destino:context.getters.getTripDestiny
         })
-        .then(res => {
-          console.log(res.msg);
-          resolve(res)
-        })
-        .catch(err => {
-          console.log(err);
-          resolve(err)
-        })
-      })
-    },
-    calcularDistanciaViaje(context){
-        const start = {
-          latitude:context.getters.getTripOrigin[0],
-          longitude:context.getters.getTripOrigin[1]
-        }
-        const end = {
-          latitude:context.getters.getTripDestiny[0],
-          longitude:context.getters.getTripDestiny[1]
-        }
-        //console.log(haversine(start,end));
-        context.commit('distanciaViaje',haversine(start,end))
-        context.dispatch('calcularPrecioViaje')
-    },
-    calcularPrecioViaje(context){
-      context.commit('precioViaje',Math.round(context.getters.getDistanciaViaje*3000)) //tarifa:3000/km
-      //console.log(Math.round(context.getters.getDistanciaViaje*2500));
-    },
-    finalizarViaje(context,calificacion_servicio){
-      return new Promise((resolve,reject) => {
-        axios.post('http://localhost:3000/servicio/finaliza',{
-          numero_celular_cond:context.getters.getInfoTaxista.numero_celular,
-          numero_celular_user:User.from(localStorage.token).numero_celular,
-          precio:context.getters.getPrecioViaje,
-          calificacion_servicio
-        })
-        .then(res => {
-          console.log('JAJAJA'+numero_celular_cond+' '+numero_celular_user+' '+precio+' '+calificacion_servicio);
-          resolve(res)
-        })
-        .catch(err => {
-          reject(err)
-        })
       })
     }
-    // nro_servicio(context){
-    //   return new Promise((resolve,reject) => {
-    //     axios.get('http://localhost:3000/'+context.getters.getInfoTaxista.numero_celular+'/'+User.from(localStorage.token).numero_celular)
-    //     .then(res => {
-    //       context.commit('nro_servicio',res.nro_servicio)
-    //       resolve(res)
-    //     })
-    //     .catch(err => {
-    //       reject(err)
-    //     })
-    //   })
-    // }
   },
   getters:{
     currentUser(state){
@@ -287,12 +224,6 @@ export const store = new Vuex.Store({
     },
     getInfoTaxista(state){
       return state.infoTaxista
-    },
-    getDistanciaViaje(state){
-      return state.distanciaViaje
-    },
-    getPrecioViaje(state){
-      return state.precioViaje
     },
     getconductor(state){
         return state.conductor

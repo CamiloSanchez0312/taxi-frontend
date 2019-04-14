@@ -108,40 +108,40 @@
       <div>
         <md-dialog :md-active.sync="showDialogConductor">
           <md-dialog-title>Info Del conductor</md-dialog-title>
-          <md-content>
-          <md-field>
+          <md-list>
+            <md-list-item>
             <label>Nombre:</label>
-            <md-input v-model="conductorElegido.nombre" disabled></md-input>
-          </md-field>
-          <md-field>
+            <md-chip>{{conductorElegido.nombre}}</md-chip>
+          </md-list-item>
+          <md-list-item>
             <label>Numero Celular:</label>
-            <md-input v-model="conductorElegido.numero_celular" disabled></md-input>
-          </md-field>
-          <md-field>
+            <md-chip>{{conductorElegido.numero_celular}} </md-chip>
+          </md-list-item>
+          <md-list-item>
             <label>Matricula:</label>
-            <md-input v-model="conductorElegido.matricula" disabled></md-input>
-          </md-field>
-          <md-field>
+            <md-chip >{{conductorElegido.matricula}}</md-chip>
+          </md-list-item>
+          <md-list-item>
             <label>Marca:</label>
-            <md-input v-model="conductorElegido.marca" disabled></md-input>
-          </md-field>
-          <md-field>
+            <md-chip>{{conductorElegido.marca}}</md-chip>
+          </md-list-item>
+          <md-list-item>
             <label>Modelo:</label>
-            <md-input v-model="conductorElegido.modelo" disabled></md-input>
-          </md-field>
-          <md-field>
+            <md-chip >{{conductorElegido.modelo}}</md-chip>
+          </md-list-item>
+          <md-list-item>
             <label>Distancia Conductor(KM):</label>
-            <md-input v-model="conductorElegido.distancia" disabled></md-input>
-          </md-field>
-          <md-field>
+            <md-chip>{{conductorElegido.distancia}}</md-chip>
+          </md-list-item>
+          <md-list-item>
             <label>Distancia Viaje(KM):</label>
-            <md-input v-model="distanciaViaje" disabled></md-input>
-          </md-field>
-          <md-field>
+            <md-chip> {{distanciaViaje}}</md-chip>
+          </md-list-item>
+          <md-list-item>
             <label>Precio Viaje(COP):</label>
-            <md-input v-model="precioViaje" disabled></md-input>
-          </md-field>
-        </md-content>
+            <md-chip>{{precioViaje}}</md-chip>
+          </md-list-item>
+        </md-list>
           <md-dialog-actions>
             <md-button class="md-primary"  @click="showDialogConductor = false">Cancelar</md-button>
             <router-link :to="{ name: 'viaje'}">

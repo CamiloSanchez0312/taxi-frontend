@@ -18,6 +18,11 @@
           <span class="md-title">My App name</span>
         </md-toolbar>
         <md-list>
+          <md-list-item v-if="currentUser">
+            <router-link :to="{ name: 'dashboard', params: {} }">
+              <md-button v-if="this.$store.state.conductor" class="md-primary">dashboard</md-button>
+            </router-link>
+          </md-list-item>
           <md-list-item v-if="!currentUser">
             <router-link :to="{ name: 'Login', params: {} }">
               <md-button class="md-primary">login</md-button>
@@ -43,9 +48,9 @@
               <md-button class="md-primary">Perfil</md-button>
             </router-link>
           </md-list-item>
-          <md-list-item v-if="currentUser">
+          <md-list-item v-if="currentUser && !this.$store.state.conductor">
             <router-link :to="{ name: 'favoritos', params: {} }">
-              <md-button class="md-primary">Favoritos</md-button>
+              <md-button v-if="" class="md-primary">Favoritos</md-button>
             </router-link>
           </md-list-item>
           <md-list-item v-if="currentUser">
@@ -90,12 +95,12 @@ export default {
 
   data(){
     return {
-      showNav : false
-
+      showNav : false,
+      isConductor: this.conductor
     }
   },
   computed: {
-    ...mapGetters({currentUser:'currentUser'}),
+  ...mapGetters({currentUser: 'currentUser'}, {conductor: 'getconductor'}),
     loadMap(){
 
     },
