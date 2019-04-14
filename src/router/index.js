@@ -8,6 +8,7 @@ import Register from '@/components/Sign_up.vue';
 import NewFavorite from '@/components/newfavorite.vue'
 import Profile from '@/components/profile.vue'
 import Favoritos from '@/components/favoritos.vue'
+import Viaje from '@/components/viaje.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -52,6 +53,11 @@ export default new Router({
       path:'/favoritos',
       name:'favoritos',
       component:Favoritos
+    },
+    {
+      path:'/viaje',
+      name:'viaje',
+      component:Viaje
     }
   ]
 })

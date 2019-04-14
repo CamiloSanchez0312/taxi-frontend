@@ -62,7 +62,7 @@
 
         <md-card-actions>
           <md-button type="submit" class="md-primary" :disabled="sending">Modify user</md-button>
-          <md-button @click="fillField" class="md-primary" :disabled="sending">testing</md-button>
+          <!-- <md-button @click="fillField" class="md-primary" :disabled="sending">testing</md-button> -->
         </md-card-actions>
       </md-card>
 
@@ -144,10 +144,10 @@
           }
         }
       },
-      fillField() {
-        //this.Name=this.profile.nombre;
-        console.log(this.profile.nombre);
-      },
+      // fillField() {
+      //   //this.Name=this.profile.nombre;
+      //   console.log(this.profile.nombre);
+      // },
       clearForm () {
         //this.$v.$reset()
         this.form.firstName = null

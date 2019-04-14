@@ -33,7 +33,6 @@
       <div> <!--puse los for en dos div distintos porque generaba un error de llaves duplicadas-->
         <l-marker v-for="(favorito,j) in favoritos" :key="j" :lat-lng="favorito.coordenadas" :icon="iconFavorito">
           <l-tooltip>
-            <u>Numero:</u> <b>{{favorito.num_favorito}}</b>
             <u>Nombre:</u> <b>{{favorito.nombre}}</b>
           </l-tooltip>
           <l-popup>
@@ -66,7 +65,7 @@
         md-title="Modificar favorito"
         md-input-maxlength="30"
         md-input-placeholder="Ingrese el nombre"
-        md-confirm-text="Done"
+        md-confirm-text="Aceptar"
         @md-confirm="modificarFavorito"/>
       </div>
       <div>
@@ -76,7 +75,7 @@
         md-title="Agregar favorito"
         md-input-maxlength="30"
         md-input-placeholder="Ingrese el nombre"
-        md-confirm-text="Done"
+        md-confirm-text="Aceptar"
         @md-confirm="crearFavorito"/>
       </div>
       </div>
@@ -112,36 +111,42 @@
           <md-content>
           <md-field>
             <label>Nombre:</label>
-            <md-input v-model="conductorElegido.nombre" readonly></md-input>
+            <md-input v-model="conductorElegido.nombre" disabled></md-input>
           </md-field>
           <md-field>
             <label>Numero Celular:</label>
-            <md-input v-model="conductorElegido.numero_celular" readonly></md-input>
+            <md-input v-model="conductorElegido.numero_celular" disabled></md-input>
           </md-field>
           <md-field>
             <label>Matricula:</label>
-            <md-input v-model="conductorElegido.matricula" readonly></md-input>
+            <md-input v-model="conductorElegido.matricula" disabled></md-input>
           </md-field>
           <md-field>
             <label>Marca:</label>
-            <md-input v-model="conductorElegido.marca" readonly></md-input>
+            <md-input v-model="conductorElegido.marca" disabled></md-input>
           </md-field>
           <md-field>
             <label>Modelo:</label>
-            <md-input v-model="conductorElegido.modelo" readonly></md-input>
+            <md-input v-model="conductorElegido.modelo" disabled></md-input>
           </md-field>
           <md-field>
-            <label>Distancia Conductor:</label>
-            <md-input v-model="conductorElegido.distancia" readonly></md-input>
+            <label>Distancia Conductor(KM):</label>
+            <md-input v-model="conductorElegido.distancia" disabled></md-input>
           </md-field>
           <md-field>
-            <label>Distancia Viaje:</label>
-            <md-input v-model="conductorElegido.distanciaViaje" readonly></md-input>
+            <label>Distancia Viaje(KM):</label>
+            <md-input v-model="distanciaViaje" disabled></md-input>
+          </md-field>
+          <md-field>
+            <label>Precio Viaje(COP):</label>
+            <md-input v-model="precioViaje" disabled></md-input>
           </md-field>
         </md-content>
           <md-dialog-actions>
             <md-button class="md-primary"  @click="showDialogConductor = false">Cancelar</md-button>
-            <md-button class="md-primary" v-on:click="aceptarServicio" @click="showDialogConductor = false">Aceptar</md-button>
+            <router-link :to="{ name: 'viaje'}">
+              <md-button class="md-primary" v-on:click="aceptarServicio" @click="showDialogConductor = false">Aceptar</md-button>
+            </router-link>
           </md-dialog-actions>
         </md-dialog>
       </div>
@@ -232,6 +237,12 @@ export default {
     },
     conductorElegido(){
       return this.$store.getters.getInfoTaxista
+    },
+    distanciaViaje(){
+      return this.$store.getters.getDistanciaViaje
+    },
+    precioViaje(){
+      return this.$store.getters.getPrecioViaje
     }
   },
   beforeCreate(){
@@ -290,6 +301,7 @@ export default {
     },
     taxistaCercano(){
       this.$store.dispatch('taxistaCercano')
+      this.$store.dispatch('calcularDistanciaViaje')
     },
     aceptarServicio(){
       this.$store.dispatch('aceptarServicio')
