@@ -166,7 +166,7 @@
       saveUser () {
         var UrlLogin;
         if(this.conductor){
-          UrlLogin='http://apirest:3000/driver/signup'
+          UrlLogin='http://localhost:3000/driver/signup'
           this.$http.post(UrlLogin,
           {numero_celular: this.form.numero_celular,
              nombre: this.form.Name,
@@ -178,7 +178,7 @@
           console.log(error)}
           )
         }else{
-          UrlLogin='http://apirest:3000/user/signup'
+          UrlLogin='http://localhost:3000/user/signup'
           this.$http.post(UrlLogin,
           {numero_celular: this.form.numero_celular,
              nombre: this.form.Name,
