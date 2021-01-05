@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@vue/cli-service": "^3.5.3",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "es6-promise": "^4.2.6",
     "haversine": "1.1.1",
     "jwt-decode": "2.2.0",
